@@ -1,17 +1,15 @@
 package pages;
 
-import elements.Buttons;
-import elements.Checkbox;
-import elements.DropDown;
-import elements.Input;
+import constans.IConstans;
+import elements.*;
+import object.Account;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class NewAccountModalPage extends BasePage {
+public class NewAccountModalPage extends BasePage implements IConstans {
     public NewAccountModalPage(WebDriver driver) {
         super(driver);
     }
-
-    private static final String URL = "https://onliner3.lightning.force.com/lightning/o/Account/new";
 
     /**
      * open Page "https://onliner3.lightning.force.com/lightning/o/Account/new"
@@ -19,75 +17,35 @@ public class NewAccountModalPage extends BasePage {
      * @return NewAccountModalPage
      */
     public NewAccountModalPage openNewAccountPage() {
-        driver.get(URL);
+        driver.get(NEW_ACCOUNT_MODAL_URL);
+        waitForPageOpened(By.xpath("//button[@title='Save']"));
         return this;
     }
 
     /**
-     * input Account Information
+     * create new Account in Modal Page
      *
-     * @param accountName   "Account Name"
-     * @param phone         "Phone"
-     * @param fax           "Fax"
-     * @param website       "Website"
+     * @param account data account
      * @return NewAccountModalPage
      */
-    public NewAccountModalPage inputAccountInformation(String accountName, String phone,
-                                                       String fax, String website) {
-        new Input(driver, "Account Name").writeText(accountName);
-        new Input(driver, "Phone").writeText(phone);
-        new Input(driver, "Fax").writeText(fax);
-        new Input(driver, "Website").writeText(website);
-        return this;
-    }
-
-    /**
-     * input Additional Information
-     *
-     * @param option1              Type
-     * @param employees            Employees
-     * @param option2              Industry
-     * @param annualRevenue        Annual Revenue
-     * @param description          Description
-     * @param billingStreet        Billing Street
-     * @param billingCity          Billing City
-     * @param billingStateProvince Billing State/Province
-     * @param billingZip           Billing Zip/Postal Code
-     * @param billingCountry       Billing Country
-     * @return NewAccountModalPage
-     */
-    public NewAccountModalPage inputAdditionalInformation(String option1, String employees, String option2,
-                                                          String annualRevenue, String description, String billingStreet,
-                                                          String billingCity, String billingStateProvince,
-                                                          String billingZip, String billingCountry) {
-        new DropDown(driver, "Type").select(option1);
-        new DropDown(driver, "Industry").select(option2);
-        new Input(driver, "Employees").writeText(employees);
-        new Input(driver, "Annual Revenue").writeText(annualRevenue);
-        new Input(driver, "Description").writeTextAreaDescription(description);
-        new Input(driver, "Billing Street").writeTextAreaStreet(billingStreet);
-        new Input(driver, "Billing City").writeText(billingCity);
-        new Input(driver, "Billing State/Province").writeText(billingStateProvince);
-        new Input(driver, "Billing Zip/Postal Code").writeText(billingZip);
-        new Input(driver, "Billing Country").writeText(billingCountry);
-        return this;
-    }
-
-    /**
-     * click Checkbox on New Account Page
-     * @return NewAccountModalPage
-     */
-    public NewAccountModalPage clickCheckboxOnNewAccountPage() {
+    public NewAccountModalPage create(Account account) {
+        new Input(driver, "Account Name").writeText(account.getAccountName());
+        new Input(driver, "Phone").writeText(account.getPhone());
+        new Input(driver, "Fax").writeText(account.getFax());
+        new Input(driver, "Website").writeText(account.getWebSite());
+        new DropDown(driver, "Type").select(account.getType());
+        new DropDown(driver, "Industry").select(account.getIndustry());
+        new Input(driver, "Employees").writeText(account.getEmployees());
+        new Input(driver, "Annual Revenue").writeText(account.getAnnualRevenue());
+        new TextArea(driver, "Description").writeTextArea(account.getDescription());
+        new TextArea(driver, "Billing Street").writeTextArea(account.getBillingStreet());
+        new Input(driver, "Billing City").writeText(account.getBillingCity());
+        new Input(driver, "Billing State/Province").writeText(account.getBillingStateProvince());
+        new Input(driver, "Billing Zip/Postal Code").writeText(account.getBillingZip());
+        new Input(driver, "Billing Country").writeText(account.getBillingCountry());
         new Checkbox(driver, "Copy Billing Address to Shipping Address").clickCheckbox();
+        new Button(driver, "Save").clickButton();
+        new Button(driver, "Close this window").clickButton();
         return this;
-    }
-
-    /**
-     * click Save Button
-     * @return AccountListPage
-     */
-    public AccountListPage clickSaveButton() {
-        new Buttons(driver, "Save").clickButton();
-        return new AccountListPage(driver);
     }
 }

@@ -1,3 +1,5 @@
+package tests;
+
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -16,15 +18,19 @@ public class BaseTest {
     WebDriver driver;
     LoginPage loginPage;
 
+    public void init() {
+        newAccountModalPage = new NewAccountModalPage(driver);
+        accountListPage = new AccountListPage(driver);
+        loginPage = new LoginPage(driver);
+    }
+
     @BeforeMethod
     public void initTest() {
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
-        newAccountModalPage = new NewAccountModalPage(driver);
-        accountListPage = new AccountListPage(driver);
-        loginPage = new LoginPage(driver);
         driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
         driver.manage().window().maximize();
+        init();
     }
 
     @AfterMethod(alwaysRun = true)

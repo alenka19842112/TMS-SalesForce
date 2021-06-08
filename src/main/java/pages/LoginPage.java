@@ -1,12 +1,10 @@
 package pages;
 
+import constans.IConstans;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class LoginPage extends BasePage {
-    private static final String LOGIN = "ei123-eajd@force.com";
-    private static final String PASSWORD = "&YP39TJUrqxy!Mp*";
-    private static final String URL = "https://onliner3.my.salesforce.com";
+public class LoginPage extends BasePage implements IConstans {
 
     public LoginPage(WebDriver driver) {
         super(driver);
@@ -16,16 +14,17 @@ public class LoginPage extends BasePage {
      * open Page "https://onliner3.my.salesforce.com"
      */
     public LoginPage openLoginPage() {
-        driver.get(URL);
+        driver.get(BASE_URL);
+        waitForPageOpened(By.id("Login"));
         return this;
     }
 
     /**
      * login to the page "https://onliner3.my.salesforce.com"
      */
-    public void login() {
-        driver.findElement(By.id("username")).sendKeys(LOGIN);
-        driver.findElement(By.id("password")).sendKeys(PASSWORD);
+    public void login(String login, String password) {
+        driver.findElement(By.id("username")).sendKeys(login);
+        driver.findElement(By.id("password")).sendKeys(password);
         driver.findElement(By.id("Login")).click();
     }
 }
